@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+    <title>Wiki</title>
+    <meta charset="utf-8" />
+
+    <style type="text/css" media="screen">
+        .highlight .gi > .x {
+        background-color: #eaffea;
+        color: #55a532;
+        }
+
+        .highlight .gd > .x {
+        background-color: #ffecec;
+        color: #bd2c00;
+        }
+    </style>
+</head>
+<body>
+    <header>{{ .Title }}</header>
+
+    <section>{{ .Body }}</section>
+
+    <footer>
+        <ul class="commits">
+        {{ range .Commits }}
+            <li class="commit" data-hash="{{ .Hash }}" data-file="{{ .FileNoExt }}">
+                <a href="/api/diff/{{ .Hash }}/{{ .FileNoExt }}">{{ .Hash }}</a> {{ .Author }} {{ .Subject }}
+            </li>
+        {{ end}}
+        </ul>
+    </footer>
+
+    <div class="diff"></div>
+
+    <script>
+        (function() {
+            var commits = document.querySelectorAll('.commit');
+            var diffElement = document.querySelector('.diff');
+
+            function request(hash, file) {
+                var r = new XMLHttpRequest();
+
+                r.onreadystatechange = function() {
+                    console.log(r.readyState);
+                    if (r.readyState === 4 && r.status === 200) {
+                        console.log(r.responseText);
+                        diffElement.innerHTML = r.responseText;
+                    }
+                };
+
+                r.open('GET', "/api/diff/" + hash + "/" + file, true);
+                r.send(null);
+            }
+
+            function onClick(event) {
+                console.log('click', event, this);
+                request(this.dataset.hash, this.dataset.file);
+            }
+
+            for (var i = 0; i < commits.length; i++) {
+                commits[i].addEventListener('click', onClick);
+            }
+        })();
+    </script>
+</body>
+</html>
