@@ -65,7 +65,7 @@ func main() {
 	r.HandleFunc("/api/diff/{hash}/{file}", DiffHandler)
 
 	// Static endpoints
-	r.HandleFunc("/wiki/{filepath}", WikiHandler)
+	r.HandleFunc("/{filepath}", WikiHandler)
 	r.HandleFunc("/", HomeHandler)
 
 	n := negroni.New()
