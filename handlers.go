@@ -14,7 +14,15 @@ import (
 const imageTypes = ".jpg .jpeg .png .gif"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello world!")
+	md, err := ioutil.ReadFile(options.Dir + "/home.md")
+	if err != nil {
+		log.Fatalln(err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	wiki := Wiki{Markdown: md, template: options.template}
+	wiki.Write(w)
 }
 
 func WikiHandler(w http.ResponseWriter, r *http.Request) {
