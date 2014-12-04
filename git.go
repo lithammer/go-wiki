@@ -28,15 +28,13 @@ func (c Commit) FileNoExt() string {
 	return strings.TrimSuffix(c.File, filepath.Ext(c.File))
 }
 
-func Diff(filepath, hash string) ([]byte, error) {
+func Diff(file, hash string) ([]byte, error) {
 	var out bytes.Buffer
 
-	// diff := fmt.Sprintf("%s^..%s", hash, hash)
-
-	git := exec.Command("git", "-C", options.Dir, "diff", hash+"^", hash, "--no-color", "--", filepath)
+	git := exec.Command("git", "-C", options.Dir, "show", "--oneline", "--no-color", hash, file)
 
 	// Prune diff stats from output with tail
-	tail := exec.Command("tail", "-n", "+6")
+	tail := exec.Command("tail", "-n", "+8")
 
 	var err error
 	tail.Stdin, err = git.StdoutPipe()
@@ -62,22 +60,6 @@ func Diff(filepath, hash string) ([]byte, error) {
 	}
 
 	return out.Bytes(), err
-
-	// Remove stat part from diff, example:
-	//
-	// diff --git foo.md foo.md
-	// index 74c109a..8c55778 100644
-	// --- foo.md
-	// +++ foo.md
-	// @@ -1,3 +1,6 @@
-	//  # Foo
-	//  ## Add more foo!
-	// +- this is a list
-	// +- of foo stuff
-	// separator := []byte("@@\n")
-	// diff := bytes.SplitAfterN(out.Bytes(), separator, 2)[1]
-
-	// return diff, err
 }
 
 func Commits(filename string, n int) ([]Commit, error) {
