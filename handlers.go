@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-const fileTypes = ".jpg .jpeg .png .gif"
+const imageTypes = ".jpg .jpeg .png .gif"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello world!")
@@ -31,7 +31,7 @@ func WikiHandler(w http.ResponseWriter, r *http.Request) {
 	realpath := fmt.Sprintf("%s/%s", options.Dir, vars["filepath"])
 
 	// Serve (accepted) images
-	for _, filext := range strings.Split(fileTypes, " ") {
+	for _, filext := range strings.Split(imageTypes, " ") {
 		if path.Ext(r.URL.Path) == filext {
 			http.ServeFile(w, r, realpath)
 			return
