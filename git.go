@@ -66,7 +66,7 @@ func Commits(filename string, n int) ([]Commit, error) {
 	var commits []Commit
 
 	// abbreviated commit hash|author name|author date, strict ISO 8601 format|subject
-	logFormat := "--pretty=%h|%an|%aI|%s"
+	logFormat := "--pretty=%h|%an|%at|%s"
 
 	cmd := exec.Command("git", "-C", options.Dir, "log", "-n", strconv.Itoa(n), logFormat, filename)
 	stdout, err := cmd.StdoutPipe()
@@ -94,10 +94,11 @@ func Commits(filename string, n int) ([]Commit, error) {
 			Subject: fields[3],
 		}
 
-		commit.Date, err = time.Parse(time.RFC3339Nano, fields[2])
+		unix, err := strconv.ParseInt(fields[2], 10, 64)
 		if err != nil {
 			log.Println("ERROR", err)
 		}
+		commit.Date = time.Unix(unix, 0)
 
 		commits = append(commits, commit)
 	}
