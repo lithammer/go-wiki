@@ -51,3 +51,7 @@ $ git add index.md
 $ git commit -m 'Add index page'
 $ git push origin master
 ```
+
+## License
+
+MIT
