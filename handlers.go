@@ -36,17 +36,17 @@ func WikiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Path to the file as it is on the the local file system
-	realpath := fmt.Sprintf("%s/%s", options.Dir, vars["filepath"])
+	fsPath := fmt.Sprintf("%s/%s", options.Dir, vars["filepath"])
 
 	// Serve (accepted) images
 	for _, filext := range strings.Split(imageTypes, " ") {
 		if path.Ext(r.URL.Path) == filext {
-			http.ServeFile(w, r, realpath)
+			http.ServeFile(w, r, fsPath)
 			return
 		}
 	}
 
-	md, err := ioutil.ReadFile(realpath + ".md")
+	md, err := ioutil.ReadFile(fsPath + ".md")
 	if err != nil {
 		http.NotFound(w, r)
 		return
@@ -54,7 +54,7 @@ func WikiHandler(w http.ResponseWriter, r *http.Request) {
 
 	wiki := Wiki{
 		Markdown: md,
-		filepath: realpath,
+		filepath: fsPath,
 		template: options.template,
 	}
 
