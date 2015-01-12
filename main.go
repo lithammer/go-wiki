@@ -58,9 +58,6 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// Custom 404 page
-	r.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
-
 	// API endpoints
 	r.HandleFunc("/api/diff/{hash}/{file}", DiffHandler)
 
