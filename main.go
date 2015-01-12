@@ -66,8 +66,10 @@ func main() {
 	r.HandleFunc("/", HomeHandler)
 
 	n := negroni.New()
-	n.Use(NewLogger())
 	n.Use(negroni.NewStatic(http.Dir("public")))
+
+	n.Use(negroni.NewRecovery())
+	n.Use(negroni.NewLogger())
 	n.UseHandler(r)
 
 	n.Run(fmt.Sprintf(":%d", options.Port))
