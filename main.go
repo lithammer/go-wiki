@@ -14,9 +14,10 @@ import (
 )
 
 var options struct {
-	Dir      string `short:"d" long:"dir" description:"Path to wiki directory" default:"wiki"`
-	Template string `short:"t" long:"base-template" description:"Path to base HTML template" default:"templates/base.html"`
+	Dir      string `short:"d" long:"dir" description:"Path to wiki directory" required:"true"`
+	Template string `short:"t" long:"base-template" description:"Path to base HTML template" default:"/usr/local/share/gowiki/templates/base.html"`
 	Port     int    `short:"p" long:"port" description:"Port to listen on" default:"8080"`
+	Static   string `long:"static" description:"Path to static files folder" default:"/usr/local/share/gowiki/public"`
 
 	template *template.Template
 	git      bool
@@ -58,18 +59,15 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// API endpoints
 	r.HandleFunc("/api/diff/{hash}/{file}", DiffHandler)
-
-	// Static endpoints
 	r.HandleFunc("/{filepath}", WikiHandler)
 	r.HandleFunc("/", HomeHandler)
 
 	n := negroni.New()
-	n.Use(negroni.NewStatic(http.Dir("public")))
 
 	n.Use(negroni.NewRecovery())
 	n.Use(negroni.NewLogger())
+	n.Use(negroni.NewStatic(http.Dir(options.Static)))
 	n.UseHandler(r)
 
 	n.Run(fmt.Sprintf(":%d", options.Port))

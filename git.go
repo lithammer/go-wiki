@@ -28,6 +28,10 @@ func (c Commit) FileNoExt() string {
 	return strings.TrimSuffix(c.File, filepath.Ext(c.File))
 }
 
+func (c Commit) HumanDate() string {
+	return c.Date.Format("2006-01-02 15:04")
+}
+
 func Diff(file, hash string) ([]byte, error) {
 	var out bytes.Buffer
 
