@@ -8,12 +8,12 @@ build:
 	go build -o gowiki
 
 clean:
-	/bin/rm -vf gowiki *.tar.gz
+	rm -vf gowiki gowiki-* gowiki-*.tar.gz
 
 install: gowiki
-	@/bin/mkdir -p $(INSTALL_PATH)/bin
-	@/bin/mkdir -p $(INSTALL_PATH)/share/gowiki/public/{css,js}
-	@/bin/mkdir -p $(INSTALL_PATH)/share/gowiki/templates
+	@mkdir -p $(INSTALL_PATH)/bin
+	@mkdir -p $(INSTALL_PATH)/share/gowiki/public/{css,js}
+	@mkdir -p $(INSTALL_PATH)/share/gowiki/templates
 
 	$(INSTALL) gowiki $(INSTALL_PATH)/bin/
 	$(INSTALL) -m 0644 public/css/*.css $(INSTALL_PATH)/share/gowiki/public/css/
@@ -21,8 +21,8 @@ install: gowiki
 	$(INSTALL) -m 0644 templates/*.html $(INSTALL_PATH)/share/gowiki/templates/
 
 uninstall:
-	/bin/rm -rvf $(INSTALL_PATH)/share/gowiki
-	/bin/rm -vf $(INSTALL_PATH)/bin/gowiki
+	rm -rvf $(INSTALL_PATH)/share/gowiki
+	rm -vf $(INSTALL_PATH)/bin/gowiki
 
 release: build
-	@/usr/bin/tar cvzf gowiki-$(REV).tar.gz gowiki public templates
+	@tar cvzf gowiki-$(REV).tar.gz gowiki public templates
