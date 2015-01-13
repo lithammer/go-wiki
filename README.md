@@ -2,7 +2,9 @@
 
 A simple HTTP server rendering Markdown styled documents on the fly and optionally shows its git history including diffs.
 
-**Warning** This is toy project to help me learn Go, so don't run this on anything exposed on the internet.
+**NOTE** This is toy project to help me learn Go, so don't run this on anything exposed on the internet.
+
+![Screenshot1](https://cloud.githubusercontent.com/assets/177685/5720761/2337178e-9b29-11e4-8a86-224f7905b3f6.png)
 
 ## Installation
 
