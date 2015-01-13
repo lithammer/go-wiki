@@ -32,7 +32,7 @@ $ chmod +x .git/hooks/post-receive
 Start the go-wiki server.
 
 ``` bash
-$ go-wiki --dir ~/www/wiki
+$ go-wiki ~/www/wiki
 ```
 
 ### On your local machine

@@ -14,7 +14,10 @@ import (
 )
 
 var options struct {
-	Dir      string `short:"d" long:"dir" description:"Path to wiki directory" required:"true"`
+	Positional struct {
+		Dir string `description:"Path to wiki directory"`
+	} `positional-args:"yes" required:"yes"`
+
 	Template string `short:"t" long:"base-template" description:"Path to base HTML template" default:"/usr/local/share/gowiki/templates/base.html"`
 	Port     int    `short:"p" long:"port" description:"Port to listen on" default:"8080"`
 	Static   string `long:"static" description:"Path to static files folder" default:"/usr/local/share/gowiki/public"`
@@ -29,7 +32,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	log.Println("Serving wiki from", options.Dir)
+	log.Println("Serving wiki from", options.Positional.Dir)
 	log.Println("Using base template", options.Template)
 
 	// Parse base template
@@ -39,18 +42,18 @@ func main() {
 	}
 
 	// Trim trailing slash from root path
-	if strings.HasSuffix(options.Dir, "/") {
-		options.Dir = options.Dir[:len(options.Dir)-1]
+	if strings.HasSuffix(options.Positional.Dir, "/") {
+		options.Positional.Dir = options.Positional.Dir[:len(options.Positional.Dir)-1]
 	}
 
 	// Verify that the wiki folder exists
-	_, err = os.Stat(options.Dir)
+	_, err = os.Stat(options.Positional.Dir)
 	if os.IsNotExist(err) {
 		log.Fatalln("ERROR", err)
 	}
 
 	// Check if the wiki folder is a Git repository
-	options.git = IsGitRepository(options.Dir)
+	options.git = IsGitRepository(options.Positional.Dir)
 	if options.git {
 		log.Println("Git repository found in directory")
 	} else {

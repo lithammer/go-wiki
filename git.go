@@ -35,7 +35,7 @@ func (c Commit) HumanDate() string {
 func Diff(file, hash string) ([]byte, error) {
 	var out bytes.Buffer
 
-	git := exec.Command("git", "-C", options.Dir, "show", "--oneline", "--no-color", hash, file)
+	git := exec.Command("git", "-C", options.Positional.Dir, "show", "--oneline", "--no-color", hash, file)
 
 	// Prune diff stats from output with tail
 	tail := exec.Command("tail", "-n", "+8")
@@ -72,7 +72,7 @@ func Commits(filename string, n int) ([]Commit, error) {
 	// abbreviated commit hash|author name|author date, strict ISO 8601 format|subject
 	logFormat := "--pretty=%h|%an|%at|%s"
 
-	cmd := exec.Command("git", "-C", options.Dir, "log", "-n", strconv.Itoa(n), logFormat, filename)
+	cmd := exec.Command("git", "-C", options.Positional.Dir, "log", "-n", strconv.Itoa(n), logFormat, filename)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("ERROR", err)
@@ -113,7 +113,7 @@ func Commits(filename string, n int) ([]Commit, error) {
 // Check if a path contains a Git repository
 func IsGitRepository(path string) bool {
 	var out bytes.Buffer
-	cmd := exec.Command("git", "-C", options.Dir, "rev-parse", "--is-inside-work-tree")
+	cmd := exec.Command("git", "-C", options.Positional.Dir, "rev-parse", "--is-inside-work-tree")
 	cmd.Stdout = &out
 
 	err := cmd.Run()
