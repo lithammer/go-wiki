@@ -14,10 +14,10 @@ import (
 )
 
 var options struct {
-	Dir      string
-	Template string
-	Static   string
-	Port     int
+	Dir       string
+	Template  string
+	StaticDir string
+	Port      int
 
 	template *template.Template
 	git      bool
@@ -33,7 +33,7 @@ Optional arguments:
   -p PORT, --port=PORT  listen port (default 8080)
   -t FILE, --base-template=FILE
                         base HTML template (default /usr/local/share/gowiki/templates/base.html)
-  -s PATH, --static=PATH
+  -s PATH, --static-dir=PATH
                         static files folder (default /usr/local/share/gowiki/public)
 `
 
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	flag.StringVarP(&options.Template, "base-template", "t", "/usr/local/share/gowiki/templates/base.html", "")
-	flag.StringVarP(&options.Static, "static", "s", "/usr/local/share/gowiki/templates/base.html", "")
+	flag.StringVarP(&options.StaticDir, "static-dir", "s", "/usr/local/share/gowiki/templates/base.html", "")
 	flag.IntVarP(&options.Port, "port", "p", 8080, "")
 
 	flag.Parse()
@@ -94,7 +94,7 @@ func main() {
 
 	n.Use(negroni.NewRecovery())
 	n.Use(negroni.NewLogger())
-	n.Use(negroni.NewStatic(http.Dir(options.Static)))
+	n.Use(negroni.NewStatic(http.Dir(options.StaticDir)))
 	n.UseHandler(r)
 
 	n.Run(fmt.Sprintf(":%d", options.Port))
