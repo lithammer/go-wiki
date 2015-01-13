@@ -1,11 +1,17 @@
 INSTALL_PATH ?= /usr/local
 INSTALL = /usr/bin/install -v -C
 REV := $(shell git rev-parse --short HEAD)
+GOARCH ?= amd64
 
 all: build
 
 build:
 	go build -o gowiki
+
+cross-compile:
+	GOOSi=darwin GOARCH=$(GOARCH) go build -o gowiki-osx
+	GOOS=linux GOARCH=$(GOARCH) go build -o gowiki-linux
+	GOOS=windows GOARCH=$(GOARCH) go build -o gowiki-windows
 
 clean:
 	rm -vf gowiki gowiki-* gowiki-*.tar.gz
