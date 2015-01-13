@@ -1,51 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
-
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
     <title>Go-wiki by renstrom</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
-    <a id="forkme_banner" href="https://github.com/renstrom/go-wiki">View on GitHub</a>
-    <div class="shell">
-
+    <div class="wrapper">
       <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Go-wiki</h1>
-            <h2>A simple HTTP server rendering Markdown styled documents</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
+        <h1>Go-wiki</h1>
+        <p>A simple HTTP server rendering Markdown styled documents</p>
+
+        <p class="view"><a href="https://github.com/renstrom/go-wiki">View the Project on GitHub <small>renstrom/go-wiki</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/renstrom/go-wiki/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/renstrom/go-wiki/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/renstrom/go-wiki">View On <strong>GitHub</strong></a></li>
+        </ul>
       </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/renstrom/go-wiki/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/renstrom/go-wiki/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
+      <section>
         <h1>
 <a id="go-wiki" class="anchor" href="#go-wiki" aria-hidden="true"><span class="octicon octicon-link"></span></a>Go Wiki</h1>
 
@@ -61,6 +43,19 @@
 <div class="highlight highlight-bash"><pre>$ git clone git@github.com:renstrom/go-wiki.git
 $ <span class="pl-s3">cd</span> go-wiki
 $ sudo make install</pre></div>
+
+<h3>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h3>
+
+<p>You will need to install the following dependencies to be able to build.</p>
+
+<ul>
+<li><a href="https://github.com/codegangsta/negroni">github.com/codegangsta/negroni</a></li>
+<li><a href="http://github.com/gorilla/mux">github.com/gorilla/mux</a></li>
+<li><a href="http://github.com/ogier/pflag">github.com/ogier/pflag</a></li>
+<li><a href="http://github.com/russross/blackfriday">github.com/russross/blackfriday</a></li>
+<li><a href="http://github.com/shurcooL/go/github_flavored_markdown">github.com/shurcooL/go/github_flavored_markdown</a></li>
+</ul>
 
 <h2>
 <a id="customize" class="anchor" href="#customize" aria-hidden="true"><span class="octicon octicon-link"></span></a>Customize</h2>
@@ -107,9 +102,9 @@ $ git config receive.denycurrentbranch ignore</pre></div>
 <span class="pl-s1"><span class="pl-k">EOF</span></span>
 $ chmod +x .git/hooks/post-receive</pre></div>
 
-<p>Start the go-wiki server.</p>
+<p>Start the server.</p>
 
-<div class="highlight highlight-bash"><pre>$ go-wiki <span class="pl-k">~</span>/www/wiki</pre></div>
+<div class="highlight highlight-bash"><pre>$ gowiki <span class="pl-k">~</span>/www/wiki</pre></div>
 
 <h3>
 <a id="on-your-local-machine" class="anchor" href="#on-your-local-machine" aria-hidden="true"><span class="octicon octicon-link"></span></a>On your local machine</h3>
@@ -131,21 +126,12 @@ $ git push origin master</pre></div>
 
 <p>MIT</p>
       </section>
-
       <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/renstrom">renstrom</a> can be found on <a href="https://github.com/renstrom/go-wiki">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
+        <p>This project is maintained by <a href="https://github.com/renstrom">renstrom</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
-
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
