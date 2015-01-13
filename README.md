@@ -4,6 +4,40 @@ A simple HTTP server rendering Markdown styled documents on the fly and optional
 
 **Warning** This is toy project to help me learn Go, so don't run this on anything exposed on the internet.
 
+## Installation
+
+```bash
+$ git clone git@github.com:renstrom/go-wiki.git
+$ cd go-wiki
+$ sudo make install
+```
+
+## Customize
+
+Copy `public/css/main.css` and `public/js/main.js` to a folder of your choice, for example `/srv/http/gowiki` so that you have the followig folder structure:
+
+```bash
+$ tree /srv/http/gowiki
+gowiki
+└── public
+    ├── css
+    │   └── main.css
+    └── js
+        └── main.js
+```
+
+Change the files to your heart's content, and run the server with:
+
+```bash
+$ gowiki --static /srv/http/gowiki/public
+```
+
+It's also possible to modify the base template used, copy `templates/base.html` to `/srv/http/gowiki/templates/base.html` and start with:
+
+```bash
+$ gowiki --static /srv/http/gowiki/public --base-template /srv/http/gowiki/templates/base.html
+```
+
 ## Usage
 
 Create git repository containing your Markdown formatted wiki pages.
