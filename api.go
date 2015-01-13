@@ -19,9 +19,9 @@ func DiffHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// XXX: This could probably be done in a nicer way
-	wrapped_diff := []byte("```diff\n" + string(diff) + "```")
-	// md := blackfriday.MarkdownCommon(wrapped_diff)
-	md := github_flavored_markdown.Markdown(wrapped_diff)
+	wrappedDiff := []byte("```diff\n" + string(diff) + "```")
+	// md := blackfriday.MarkdownCommon(wrappedDiff)
+	md := github_flavored_markdown.Markdown(wrappedDiff)
 
 	w.Header().Set("Content-Type", "text/html")
 	w.Write(md)
