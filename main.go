@@ -10,50 +10,74 @@ import (
 
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
-	"github.com/jessevdk/go-flags"
+	flag "github.com/ogier/pflag"
 )
 
 var options struct {
-	Positional struct {
-		Dir string `description:"Path to wiki directory"`
-	} `positional-args:"yes" required:"yes"`
-
-	Template string `short:"t" long:"base-template" description:"Path to base HTML template" default:"/usr/local/share/gowiki/templates/base.html"`
-	Port     int    `short:"p" long:"port" description:"Port to listen on" default:"8080"`
-	Static   string `long:"static" description:"Path to static files folder" default:"/usr/local/share/gowiki/public"`
+	Dir      string
+	Template string
+	Static   string
+	Port     int
 
 	template *template.Template
 	git      bool
 }
 
+var usage = `Usage: gowiki [options...] <path>
+
+Positional arguments:
+  path                  directory to serve wiki pages from
+
+Optional arguments:
+  -h, --help            show this help message and exit
+  -p PORT, --port=PORT  listen port (default 8080)
+  -t FILE, --base-template=FILE
+                        base HTML template (default /usr/local/share/gowiki/templates/base.html)
+  -s PATH, --static=PATH
+                        static files folder (default /usr/local/share/gowiki/public)
+`
+
 func main() {
-	_, err := flags.Parse(&options)
-	if err != nil {
-		os.Exit(0)
+	flag.Usage = func() {
+		fmt.Fprint(os.Stderr, usage)
 	}
 
-	log.Println("Serving wiki from", options.Positional.Dir)
+	flag.StringVarP(&options.Template, "base-template", "t", "/usr/local/share/gowiki/templates/base.html", "")
+	flag.StringVarP(&options.Static, "static", "s", "/usr/local/share/gowiki/templates/base.html", "")
+	flag.IntVarP(&options.Port, "port", "p", 8080, "")
+
+	flag.Parse()
+
+	options.Dir = flag.Arg(0)
+
+	if options.Dir == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	log.Println("Serving wiki from", options.Dir)
 	log.Println("Using base template", options.Template)
 
 	// Parse base template
+	var err error
 	options.template, err = template.ParseFiles(options.Template)
 	if err != nil {
 		log.Fatalln("ERROR", err)
 	}
 
 	// Trim trailing slash from root path
-	if strings.HasSuffix(options.Positional.Dir, "/") {
-		options.Positional.Dir = options.Positional.Dir[:len(options.Positional.Dir)-1]
+	if strings.HasSuffix(options.Dir, "/") {
+		options.Dir = options.Dir[:len(options.Dir)-1]
 	}
 
 	// Verify that the wiki folder exists
-	_, err = os.Stat(options.Positional.Dir)
+	_, err = os.Stat(options.Dir)
 	if os.IsNotExist(err) {
 		log.Fatalln("ERROR", err)
 	}
 
 	// Check if the wiki folder is a Git repository
-	options.git = IsGitRepository(options.Positional.Dir)
+	options.git = IsGitRepository(options.Dir)
 	if options.git {
 		log.Println("Git repository found in directory")
 	} else {

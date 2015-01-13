@@ -14,7 +14,7 @@ import (
 const imageTypes = ".jpg .jpeg .png .gif"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	md, err := ioutil.ReadFile(options.Positional.Dir + "/home.md")
+	md, err := ioutil.ReadFile(options.Dir + "/home.md")
 	if err != nil {
 		log.Fatalln(err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -36,7 +36,7 @@ func WikiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Path to the file as it is on the the local file system
-	fsPath := fmt.Sprintf("%s/%s", options.Positional.Dir, vars["filepath"])
+	fsPath := fmt.Sprintf("%s/%s", options.Dir, vars["filepath"])
 
 	// Serve (accepted) images
 	for _, filext := range strings.Split(imageTypes, " ") {
