@@ -29,13 +29,13 @@ gowiki
 Change the files to your heart's content, and run the server with:
 
 ```bash
-$ gowiki --static /srv/http/gowiki/public
+$ gowiki -s /srv/http/gowiki/public
 ```
 
 It's also possible to modify the base template used, copy `templates/base.html` to `/srv/http/gowiki/templates/base.html` and start with:
 
 ```bash
-$ gowiki --static /srv/http/gowiki/public --base-template /srv/http/gowiki/templates/base.html
+$ gowiki -s /srv/http/gowiki/public -t /srv/http/gowiki/templates/base.html
 ```
 
 ## Usage
@@ -75,7 +75,8 @@ Replace `<user>` and `<host>` with credentials for your specific machine.
 
 ``` bash
 $ git init
-$ git remote add origin ssh://<user>@<host>/home/<user>/www/wiki
+$ git remote add origin \
+    ssh://<user>@<host>/home/<user>/www/wiki
 ```
 
 Now create some Markdown file and push.
