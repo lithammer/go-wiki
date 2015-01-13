@@ -36,7 +36,7 @@ It's also possible to modify the base template used, copy `templates/base.html` 
 
 ```bash
 $ gowiki -s /srv/http/gowiki/public \
-         -t /srv/http/gowiki/templates/base.html
+    -t /srv/http/gowiki/templates/base.html
 ```
 
 ## Usage
