@@ -13,8 +13,8 @@ import (
 
 const imageTypes = ".jpg .jpeg .png .gif"
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	md, err := ioutil.ReadFile(options.Dir + "/home.md")
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	md, err := ioutil.ReadFile(options.Dir + "/index.md")
 	if err != nil {
 		log.Fatalln(err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)

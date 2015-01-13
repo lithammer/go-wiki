@@ -88,7 +88,7 @@ func main() {
 
 	r.HandleFunc("/api/diff/{hash}/{file}", DiffHandler)
 	r.HandleFunc("/{filepath}", WikiHandler)
-	r.HandleFunc("/", HomeHandler)
+	r.HandleFunc("/", IndexHandler)
 
 	n := negroni.New()
 
