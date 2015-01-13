@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Go-wiki by renstrom</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/renstrom/go-wiki">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Go-wiki</h1>
+            <h2>A simple HTTP server rendering Markdown styled documents</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/renstrom/go-wiki/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/renstrom/go-wiki/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a id="go-wiki" class="anchor" href="#go-wiki" aria-hidden="true"><span class="octicon octicon-link"></span></a>Go Wiki</h1>
+
+<p>A simple HTTP server rendering Markdown styled documents on the fly and optionally shows its git history including diffs.</p>
+
+<p><strong>Warning</strong> This is toy project to help me learn Go, so don't run this on anything exposed on the internet.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-bash"><pre>$ git clone git@github.com:renstrom/go-wiki.git
+$ <span class="pl-s3">cd</span> go-wiki
+$ sudo make install</pre></div>
+
+<h2>
+<a id="customize" class="anchor" href="#customize" aria-hidden="true"><span class="octicon octicon-link"></span></a>Customize</h2>
+
+<p>Copy <code>public/css/main.css</code> and <code>public/js/main.js</code> to a folder of your choice, for example <code>/srv/http/gowiki</code> so that you have the followig folder structure:</p>
+
+<div class="highlight highlight-bash"><pre>$ tree /srv/http/gowiki
+gowiki
+└── public
+    ├── css
+    │   └── main.css
+    └── js
+        └── main.js</pre></div>
+
+<p>Change the files to your heart's content, and run the server with:</p>
+
+<div class="highlight highlight-bash"><pre>$ gowiki -s /srv/http/gowiki/public</pre></div>
+
+<p>It's also possible to modify the base template used, copy <code>templates/base.html</code> to <code>/srv/http/gowiki/templates/base.html</code> and start with:</p>
+
+<div class="highlight highlight-bash"><pre>$ gowiki -s /srv/http/gowiki/public \
+    -t /srv/http/gowiki/templates/base.html</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Create git repository containing your Markdown formatted wiki pages.</p>
+
+<h3>
+<a id="on-the-server" class="anchor" href="#on-the-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>On the server</h3>
+
+<p>Create an empty repository.</p>
+
+<div class="highlight highlight-bash"><pre>$ mkdir -p <span class="pl-k">~</span>/www/wiki <span class="pl-k">&amp;&amp;</span> <span class="pl-s3">cd</span> <span class="pl-vo">$_</span>
+$ git init
+$ git config core.worktree <span class="pl-k">~</span>/www/wiki
+$ git config receive.denycurrentbranch ignore</pre></div>
+
+<p>Setup a post-receive hook.</p>
+
+<div class="highlight highlight-bash"><pre>$ cat <span class="pl-k">&gt;</span> .git/hooks/post-receive <span class="pl-s1"><span class="pl-k">&lt;&lt;</span><span class="pl-k">EOF</span></span>
+<span class="pl-s1">#!/bin/sh</span>
+<span class="pl-s1">git checkout --force</span>
+<span class="pl-s1"><span class="pl-k">EOF</span></span>
+$ chmod +x .git/hooks/post-receive</pre></div>
+
+<p>Start the go-wiki server.</p>
+
+<div class="highlight highlight-bash"><pre>$ go-wiki <span class="pl-k">~</span>/www/wiki</pre></div>
+
+<h3>
+<a id="on-your-local-machine" class="anchor" href="#on-your-local-machine" aria-hidden="true"><span class="octicon octicon-link"></span></a>On your local machine</h3>
+
+<p>Replace <code>&lt;user&gt;</code> and <code>&lt;host&gt;</code> with credentials for your specific machine.</p>
+
+<div class="highlight highlight-bash"><pre>$ git init
+$ git remote add origin \
+    ssh://<span class="pl-k">&lt;</span>user<span class="pl-k">&gt;</span>@<span class="pl-k">&lt;</span>host<span class="pl-k">&gt;</span>/home/<span class="pl-k">&lt;</span>user<span class="pl-k">&gt;</span>/www/wiki</pre></div>
+
+<p>Now create some Markdown file and push.</p>
+
+<div class="highlight highlight-bash"><pre>$ git add index.md
+$ git commit -m <span class="pl-s1"><span class="pl-pds">'</span>Add index page<span class="pl-pds">'</span></span>
+$ git push origin master</pre></div>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/renstrom">renstrom</a> can be found on <a href="https://github.com/renstrom/go-wiki">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
