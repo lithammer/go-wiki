@@ -76,10 +76,10 @@ EOF
 $ chmod +x .git/hooks/post-receive
 ```
 
-Start the go-wiki server.
+Start the server.
 
 ``` bash
-$ go-wiki ~/www/wiki
+$ gowiki ~/www/wiki
 ```
 
 ### On your local machine
