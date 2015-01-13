@@ -14,6 +14,16 @@ $ cd go-wiki
 $ sudo make install
 ```
 
+### Dependencies
+
+You will need to install the following dependencies to be able to build.
+
+- [github.com/codegangsta/negroni](https://github.com/codegangsta/negroni)
+- [github.com/gorilla/mux](http://github.com/gorilla/mux)
+- [github.com/ogier/pflag](http://github.com/ogier/pflag)
+- [github.com/russross/blackfriday](http://github.com/russross/blackfriday)
+- [github.com/shurcooL/go/github_flavored_markdown](http://github.com/shurcooL/go/github_flavored_markdown)
+
 ## Customize
 
 Copy `public/css/main.css` and `public/js/main.js` to a folder of your choice, for example `/srv/http/gowiki` so that you have the followig folder structure:
