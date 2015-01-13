@@ -69,7 +69,7 @@ func Diff(file, hash string) ([]byte, error) {
 func Commits(filename string, n int) ([]Commit, error) {
 	var commits []Commit
 
-	// abbreviated commit hash|author name|author date, strict ISO 8601 format|subject
+	// abbreviated commit hash|author name|author date, UNIX timestamp|subject
 	logFormat := "--pretty=%h|%an|%at|%s"
 
 	cmd := exec.Command("git", "-C", options.Dir, "log", "-n", strconv.Itoa(n), logFormat, filename)
