@@ -9,7 +9,7 @@ build:
 	go build -o gowiki
 
 cross-compile:
-	GOOSi=darwin GOARCH=$(GOARCH) go build -o gowiki-osx
+	GOOS=darwin GOARCH=$(GOARCH) go build -o gowiki-osx
 	GOOS=linux GOARCH=$(GOARCH) go build -o gowiki-linux
 	GOOS=windows GOARCH=$(GOARCH) go build -o gowiki-windows
 
