@@ -13,17 +13,7 @@ import (
 	flag "github.com/ogier/pflag"
 )
 
-var options struct {
-	Dir       string
-	Template  string
-	StaticDir string
-	Port      int
-
-	template *template.Template
-	git      bool
-}
-
-var usage = `Usage: gowiki [options...] <path>
+const Usage = `Usage: gowiki [options...] <path>
 
 Positional arguments:
   path                  directory to serve wiki pages from
@@ -37,9 +27,19 @@ Optional arguments:
                         static files folder (default /usr/local/share/gowiki/public)
 `
 
+var options struct {
+	Dir       string
+	Template  string
+	StaticDir string
+	Port      int
+
+	template *template.Template
+	git      bool
+}
+
 func main() {
 	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, usage)
+		fmt.Fprint(os.Stderr, Usage)
 	}
 
 	flag.StringVarP(&options.Template, "base-template", "t", "/usr/local/share/gowiki/templates/base.html", "")
