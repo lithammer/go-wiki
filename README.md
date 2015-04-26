@@ -10,7 +10,7 @@ A simple HTTP server rendering Markdown styled documents on the fly and optional
 
 ```bash
 $ go get github.com/renstrom/go-wiki
-$ $GOPATH/bin/gowiki <path to wiki directory>
+$ $GOPATH/bin/go-wiki <path to wiki directory>
 ```
 
 ## Customize
@@ -18,7 +18,7 @@ $ $GOPATH/bin/gowiki <path to wiki directory>
 It's only possible to customize the CSS. Put all your customizations in a file of your choosing and point to it using the `--custom-css` flag.
 
 ```bash
-$ gowiki ~/www/wiki --custom-css=<path to custom css>
+$ go-wiki ~/www/wiki --custom-css=<path to custom css>
 ```
 
 ## Usage
@@ -49,7 +49,7 @@ $ chmod +x .git/hooks/post-receive
 Start the server.
 
 ``` bash
-$ gowiki ~/www/wiki
+$ go-wiki ~/www/wiki
 ```
 
 ### On your local machine
