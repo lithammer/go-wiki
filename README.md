@@ -2,53 +2,23 @@
 
 A simple HTTP server rendering Markdown styled documents on the fly and optionally shows its git history including diffs.
 
-**NOTE** This is toy project to help me learn Go, so don't run this on anything exposed on the internet.
+**NOTE** This is toy project to help me learn Go, so don't run this on anything publically available.
 
 ![Screenshot1](https://cloud.githubusercontent.com/assets/177685/5720761/2337178e-9b29-11e4-8a86-224f7905b3f6.png)
 
 ## Installation
 
 ```bash
-$ git clone git@github.com:renstrom/go-wiki.git
-$ cd go-wiki
-$ sudo make install
+$ go get github.com/renstrom/go-wiki
+$ $GOPATH/bin/gowiki <path to wiki directory>
 ```
-
-### Dependencies
-
-You will need to install the following dependencies to be able to build.
-
-- [github.com/codegangsta/negroni](https://github.com/codegangsta/negroni)
-- [github.com/gorilla/mux](http://github.com/gorilla/mux)
-- [github.com/ogier/pflag](http://github.com/ogier/pflag)
-- [github.com/russross/blackfriday](http://github.com/russross/blackfriday)
-- [github.com/shurcooL/go/github_flavored_markdown](http://github.com/shurcooL/go/github_flavored_markdown)
 
 ## Customize
 
-Copy `public/css/main.css` and `public/js/main.js` to a folder of your choice, for example `/srv/http/gowiki` so that you have the followig folder structure:
+It's only possible to customize the CSS. Put all your customizations in a file of your choosing and point to it using the `--custom-css` flag.
 
 ```bash
-$ tree /srv/http/gowiki
-gowiki
-└── public
-    ├── css
-    │   └── main.css
-    └── js
-        └── main.js
-```
-
-Change the files to your heart's content, and run the server with:
-
-```bash
-$ gowiki -s /srv/http/gowiki/public
-```
-
-It's also possible to modify the base template used, copy `templates/base.html` to `/srv/http/gowiki/templates/base.html` and start with:
-
-```bash
-$ gowiki -s /srv/http/gowiki/public \
-    -t /srv/http/gowiki/templates/base.html
+$ gowiki ~/www/wiki --custom-css=<path to custom css>
 ```
 
 ## Usage

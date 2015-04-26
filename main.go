@@ -8,8 +8,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/codegangsta/negroni"
-	"github.com/gorilla/mux"
 	flag "github.com/ogier/pflag"
 )
 
@@ -21,17 +19,13 @@ Positional arguments:
 Optional arguments:
   -h, --help            show this help message and exit
   -p PORT, --port=PORT  listen port (default 8080)
-  -t FILE, --base-template=FILE
-                        base HTML template (default /usr/local/share/gowiki/templates/base.html)
-  -s PATH, --static-dir=PATH
-                        static files folder (default /usr/local/share/gowiki/public)
+  --custom-css=PATH     path to custom CSS file
 `
 
 var options struct {
 	Dir       string
-	Template  string
-	StaticDir string
 	Port      int
+	CustomCSS string
 
 	template *template.Template
 	git      bool
@@ -42,9 +36,8 @@ func main() {
 		fmt.Fprint(os.Stderr, Usage)
 	}
 
-	flag.StringVarP(&options.Template, "base-template", "t", "/usr/local/share/gowiki/templates/base.html", "")
-	flag.StringVarP(&options.StaticDir, "static-dir", "s", "/usr/local/share/gowiki/templates/base.html", "")
 	flag.IntVarP(&options.Port, "port", "p", 8080, "")
+	flag.StringVar(&options.CustomCSS, "custom-css", "", "")
 
 	flag.Parse()
 
@@ -56,13 +49,12 @@ func main() {
 	}
 
 	log.Println("Serving wiki from", options.Dir)
-	log.Println("Using base template", options.Template)
 
 	// Parse base template
 	var err error
-	options.template, err = template.ParseFiles(options.Template)
+	options.template, err = template.New("base").Parse(Template)
 	if err != nil {
-		log.Fatalln("ERROR", err)
+		log.Fatalln("Error parsing HTML template:", err)
 	}
 
 	// Trim trailing slash from root path
@@ -73,7 +65,7 @@ func main() {
 	// Verify that the wiki folder exists
 	_, err = os.Stat(options.Dir)
 	if os.IsNotExist(err) {
-		log.Fatalln("ERROR", err)
+		log.Fatalln("Directory not found")
 	}
 
 	// Check if the wiki folder is a Git repository
@@ -84,18 +76,9 @@ func main() {
 		log.Println("No git repository found in directory")
 	}
 
-	r := mux.NewRouter()
+	http.Handle("/api/diff/", commonHandler(DiffHandler))
+	http.Handle("/", commonHandler(WikiHandler))
 
-	r.HandleFunc("/api/diff/{hash}/{file}", DiffHandler)
-	r.HandleFunc("/{filepath}", WikiHandler)
-	r.HandleFunc("/", IndexHandler)
-
-	n := negroni.New()
-
-	n.Use(negroni.NewRecovery())
-	n.Use(negroni.NewLogger())
-	n.Use(negroni.NewStatic(http.Dir(options.StaticDir)))
-	n.UseHandler(r)
-
-	n.Run(fmt.Sprintf(":%d", options.Port))
+	log.Println("Listening on:", options.Port)
+	http.ListenAndServe(fmt.Sprintf(":%d", options.Port), nil)
 }

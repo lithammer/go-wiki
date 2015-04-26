@@ -7,36 +7,25 @@ import (
 	"net/http"
 	"path"
 	"strings"
-
-	"github.com/gorilla/mux"
 )
 
 const imageTypes = ".jpg .jpeg .png .gif"
 
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	md, err := ioutil.ReadFile(options.Dir + "/index.md")
-	if err != nil {
-		log.Fatalln(err)
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-
-	wiki := Wiki{Markdown: md, template: options.template}
-	wiki.Write(w)
-}
-
 func WikiHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	filePath := r.URL.Path[1:]
+	if filePath == "" {
+		filePath = "index"
+	}
 
 	// Deny requests trying to traverse up the directory structure using
 	// relative paths
-	if strings.Contains(vars["filepath"], "..") {
+	if strings.Contains(filePath, "..") {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
 	// Path to the file as it is on the the local file system
-	fsPath := fmt.Sprintf("%s/%s", options.Dir, vars["filepath"])
+	fsPath := fmt.Sprintf("%s/%s", options.Dir, filePath)
 
 	// Serve (accepted) images
 	for _, filext := range strings.Split(imageTypes, " ") {
@@ -46,6 +35,12 @@ func WikiHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Serve custom CSS
+	if options.CustomCSS != "" && r.URL.Path == "/css/custom.css" {
+		http.ServeFile(w, r, options.CustomCSS)
+		return
+	}
+
 	md, err := ioutil.ReadFile(fsPath + ".md")
 	if err != nil {
 		http.NotFound(w, r)
@@ -53,12 +48,13 @@ func WikiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	wiki := Wiki{
-		Markdown: md,
-		filepath: fsPath,
-		template: options.template,
+		Markdown:  md,
+		CustomCSS: options.CustomCSS,
+		filepath:  fsPath,
+		template:  options.template,
 	}
 
-	wiki.Commits, err = Commits(vars["filepath"]+".md", 5)
+	wiki.Commits, err = Commits(filePath+".md", 5)
 	if err != nil {
 		log.Println("ERROR", "Failed to get commits")
 	}
