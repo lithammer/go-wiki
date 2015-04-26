@@ -10,9 +10,10 @@ import (
 )
 
 type Wiki struct {
-	Body     template.HTML
-	Markdown []byte
-	Commits  []Commit
+	Body      template.HTML
+	Markdown  []byte
+	Commits   []Commit
+	CustomCSS string
 
 	template *template.Template
 	filepath string

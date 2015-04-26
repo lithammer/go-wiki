@@ -3,19 +3,23 @@ package main
 import (
 	"log"
 	"net/http"
+	"strings"
 
-	"github.com/gorilla/mux"
 	"github.com/shurcooL/go/github_flavored_markdown"
 )
 
 func DiffHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	parts := strings.Split(r.URL.Path[len("/api/diff/"):], "/")
+	if len(parts) != 2 {
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+	}
 
-	file := vars["file"] + ".md"
+	hash := parts[0]
+	file := parts[1] + ".md"
 
-	diff, err := Diff(file, vars["hash"])
+	diff, err := Diff(file, hash)
 	if err != nil {
-		log.Println("ERROR", "Failed to get commit hash", vars["hash"])
+		log.Println("ERROR", "Failed to get commit hash", hash)
 	}
 
 	// XXX: This could probably be done in a nicer way

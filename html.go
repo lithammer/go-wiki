@@ -1,10 +1,11 @@
-<!doctype html>
+package main
+
+const Template = `<!doctype html>
 <html>
 <head>
     <title>Wiki</title>
     <meta charset="utf-8" />
 
-    <link rel="stylesheet" href="/css/main.css" type="text/css">
     <style type="text/css">
         body {
             margin: 1rem;
@@ -72,6 +73,11 @@
             margin: 0.1rem 0;
         }
     </style>
+
+    {{ if .CustomCSS }}
+    <link rel="stylesheet" href="/css/custom.css" type="text/css">
+    {{ end }}
+
 </head>
 <body>
     <header>{{ .Title }}</header>
@@ -140,4 +146,4 @@
         })();
     </script>
 </body>
-</html>
+</html>`
