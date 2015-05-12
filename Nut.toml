@@ -1,0 +1,4 @@
+[dependencies]
+"github.com/russross/blackfriday" = ""
+"github.com/shurcooL/github_flavored_markdown" = ""
+"github.com/ogier/pflag" = ""

@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	flag "github.com/ogier/pflag"
+	flag "github.com/renstrom/go-wiki/vendor/_nuts/github.com/ogier/pflag"
 )
 
 const Usage = `Usage: gowiki [options...] <path>

@@ -6,7 +6,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/russross/blackfriday"
+	"github.com/renstrom/go-wiki/vendor/_nuts/github.com/russross/blackfriday"
 )
 
 type Wiki struct {
