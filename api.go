@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/shurcooL/go/github_flavored_markdown"
+	"github.com/renstrom/go-wiki/vendor/_nuts/github.com/shurcooL/go/github_flavored_markdown"
 )
 
 func DiffHandler(w http.ResponseWriter, r *http.Request) {
